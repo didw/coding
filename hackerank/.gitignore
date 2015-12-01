@@ -1,7 +1,0 @@
-*.vcxproj
-Debug
-*.filters
-sample.txt
-*.opensdf
-*.sdf
-*.sln
