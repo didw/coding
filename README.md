@@ -1,4 +1,4 @@
-# Coding Competetion
+#Coding Competetion
 ## Topcoder
 
 ## [Hankerrank](hackerrank/README.md)
@@ -7,4 +7,4 @@
 
 ## [Algospot](algospot/README.md)
 
-
+## [LGE Codejam](lgecodejam/README.md)
