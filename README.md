@@ -5,6 +5,6 @@
 
 ## CodeChef
 
-## Algospot
+## [Algospot](algospot/README.md)
 
 
