@@ -1,0 +1,52 @@
+
+what is the difference between generative and discriminative models? 
+
+A generative algorithm models how the data was generated in order to categorize a signal. It asks the question: based on my generation assumptions, which category is most likely to generate this signal?
+A discriminative algorithm does not care about how the data was generated, it simply categorizes a given signal.
+
+what is SVM? 
+
+A Support Vector Machine (SVM) is a discriminative classifier formally defined by a separating hyperplane. In other words, given labeled training data (supervised learning), the algorithm outputs an optimal hyperplane which categorizes new examples.
+
+why SVM need to use kernel? 
+
+To raise the dimensionality of the data.
+
+how SVM calculate the inner product in the high dimension space? 
+
+The dot product in the high dimensional space can actually be calculated in the low dimensional space if you apply the non-linear kernel.
+
+what is PCA? 
+
+Principal component analysis (PCA) is a mathematical algorithm that reduces the dimensionality of the data while retaining most of the variation in the data set
+it can be solved by eigenanalysis and singular value decomposition.
+
+what is LDA? 
+
+LDA is based upon the concept of searching for a linear combination of variables (predictors) that best separates two classes (targets).
+
+what's the difference between PCA and LDA? 
+
+The main difference is that PCA is label agnostic -- it treats the entire data set as a whole. LDA, on the other hand, tries to explicitly model difference between classes (labels) within the data. 
+PCA performs unsupervised transformation, while LDA is supervised. 
+
+how LDA measure the discriminant? 
+
+
+how to build a speech recognition system from scratch? 
+
+how to initialize the acoustic model at beginning? 
+
+Why EM algorithm works?
+
+Explain Good-Turing and Kneser-Ney language model smoothing. 
+
+In Good-Turing smoothing they uses word count and additional constant to smooth probability. It shows good performance if training data is sufficient,but if training data is not sufficient it is possible that probability is zero. Kneser-Ney smoothing use previous history data to prevent this.
+
+How to do decoding (speech recognition)? 
+
+
+coding question: given a dictionary and a character string, try to write a function segmenting the character string into a sequence of words listed in the dictionary.
+
+
+
