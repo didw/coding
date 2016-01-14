@@ -1,5 +1,7 @@
 # Top Coder Arena
 
+[editorial](http://apps.topcoder.com/wiki/display/tc/SRM+678)
+
 [srm651(500)](srm651b.cpp)
 [srm665](srm665.cpp)
 [srm666](srm666.cpp)
@@ -18,5 +20,6 @@
 [srm674(250)](srm674a.cpp)
 [srm674(500)](srm674b.cpp)
 [srm674(1000)](srm674c.cpp)
-
+[srm678(250)](srm678a.cpp)
+[srm678(500)](srm678b.cpp)
 
