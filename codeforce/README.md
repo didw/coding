@@ -1,5 +1,5 @@
 ## Codeforce contest
-#### http://codeforce.com
+#### http://codeforces.com
 
 #### contest 342
 - [a](342/a.cpp)
