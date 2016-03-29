@@ -2,6 +2,12 @@
 
 [editorial](http://apps.topcoder.com/wiki/display/tc/SRM+678)
 
+### 2016 Topcoder Open
+#### Round1A
+- [250](TCO2016_Round1A_250.cpp)
+- [500](TCO2016_Round1A_500.cpp)
+
+### Single Round Match
 - [srm651(500)](srm651b.cpp)
 - [srm665](srm665.cpp)
 - [srm666](srm666.cpp)
