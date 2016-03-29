@@ -9,4 +9,6 @@
 
 ## [Algospot](algospot/README.md)
 
+## [Google Codejam](GCJ/README.md)
+
 ## [LGE Codejam](lgecodejam/README.md)
