@@ -14,7 +14,20 @@ using namespace std;
  **/
 
 string line[20]; // One line of the map ('.' = free, '0' = you, otherwise the id of the opponent)
-int cache[20][20];
+int cache[35][20];
+
+double getRatio() {
+    double res = 0;
+    for (int i = 0; i < 20; ++i) {
+        for (int j = 0; j < 35; ++j) {
+            if (line[i][j] != '.') res += 1;
+        }
+    }
+    res = 700 / (400 + res);
+    if (res > 1.5) res = 1.5;
+    if (res < 0.5) res = 0.5;
+    return res;
+}
 
 double getScore(int cx, int cy, int tx, int ty) {
     int bx = min(cx, tx), ex = max(cx, tx);
@@ -26,7 +39,7 @@ double getScore(int cx, int cy, int tx, int ty) {
                 res += 1;
         }
     }
-    pow(res / ((ey-by+1)*(ex-bx+1)), 1.5);
+    pow(res / ((ey-by+1)*(ex-bx+1)), getRatio());
 }
 
 int getMaxRoute(int cx, int cy, int tx, int ty) {
@@ -114,7 +127,7 @@ int main()
         for (int i = 0; i < 20; i++) {
             cin >> line[i]; cin.ignore();
         }
-        if (arn < 8) {
+        if (arn < 0) {
             if (arn != 0 && (x != tx || y != ty)) {
                 goToTarget(x, y, tx, ty);
                 continue;
@@ -136,14 +149,14 @@ int main()
         cerr << "tx: " << tx << ", ty: " << ty << endl;
         if (line[ty][tx] != '.' || (tx == x && ty == y)) {
             vector<pair<int, int>> cand;
-            for (int i = 0; i < 100; ++i) {
+            for (int i = 0; i < 200; ++i) {
                 tx = rand() % 35;
                 ty = rand() % 20;
                 if (line[ty][tx] == '.') {
                     cand.push_back(make_pair(tx, ty));
                 }
                 int maxScore = 0;
-                if (cand.size() == 4) {
+                if (cand.size() == 10) {
                     for (int j = 0; j < cand.size(); ++j) {
                         if (maxScore < getScore(x, y, cand[j].first, cand[j].second)) {
                             maxScore = getScore(x, y, cand[j].first, cand[j].second);
@@ -153,7 +166,7 @@ int main()
                     break;
                 }
             }
-            if (cand.size() < 4) {
+            if (cand.size() < 10) {
                 int maxScore = 0;
                 for (int j = 0; j < cand.size(); ++j) {
                     if (maxScore < getScore(x, y, cand[j].first, cand[j].second)) {
