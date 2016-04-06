@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <cstring>
 
 using namespace std;
 
@@ -40,14 +41,14 @@ void blockTop(int id) {
             cy--;
         }
         if (cx == 8) cx--;
-        cout << cx << " " << cy << "V" << endl;
+        cout << cx << " " << cy+1 << " H BLOCK TOP!" << endl;
     }
     else {
         int cx = x[0], cy = y[0];
         while (isBlockedH(cx+1, cy)) {
             cy--;
         }
-        cout << cx << " " << cy << "V" << endl;
+        cout << cx << " " << cy+1 << " H BLOCK TOP!" << endl;
     }
 }
 
@@ -58,25 +59,25 @@ void blockBottom(int id) {
             cy++;
         }
         if (cx == 8) cx--;
-        cout << cx << " " << cy+1 << " V" << endl;
+        cout << cx << " " << cy+1 << " H BLOCK BOTTOM!" << endl;
     }
     else {
         int cx = x[0], cy = y[0];
         while (isBlockedH(cx+1, cy)) {
             cy++;
         }
-        cout << cx << " " << cy+1 << " V" << endl;
+        cout << cx << " " << cy+1 << " H BLOCK BOTTOM!" << endl;
     }
 }
 
 bool blockLeft() {
     int cx = x[1], cy = y[1];
     if (cy > 0 && !isBlockedH(cx, cy) && !isBlockedH(cx, cy-1)) {
-        cout << cx << " " << cy-1 << " H Block Left!" << endl;
+        cout << cx << " " << cy-1 << " V Block Left!" << endl;
         return true;
     }
     if (cy < 8 && !isBlockedH(cx, cy) && !isBlockedH(cx, cy+1)) {
-        cout << cx << " " << cy << " H Block Left!" << endl;
+        cout << cx << " " << cy << " V Block Left!" << endl;
         return true;
     }
     return false;
@@ -85,67 +86,14 @@ bool blockLeft() {
 bool blockRight() {
     int cx = x[0]+1, cy = y[0];
     if (cy > 0 && !isBlockedH(cx, cy) && !isBlockedH(cx, cy-1)) {
-        cout << cx-1 << " " << cy-1 << " H Block Right!" << endl;
+        cout << cx << " " << cy-1 << " V Block Right!" << endl;
         return true;
     }
     if (cy < 8 && !isBlockedH(cx, cy) && !isBlockedH(cx, cy+1)) {
-        cout << cx-1 << " " << cy << " H Block Right!" << endl;
+        cout << cx << " " << cy << " V Block Right!" << endl;
         return true;
     }
     return false;
-}
-
-bool blockPlayer(myId) {
-    if (blockH) return false;
-    if (myId == 0) {
-        bool blockedV = isBlockedH(x[1], y[1]);
-        if (blockedV) {
-            int d, dist = 100;
-            if (canGoUp(x[1], y[1]) && goLeftRec(x[1], y[1]-1) < dist) {
-                d = 1;
-                dist = goLeftRec(x[1], y[1]-1);
-            }
-            if (canGoDown(x[1], y[1]) && goLeftRec(x[1], y[1]+1) < dist) {
-                d = 2;
-                dist = goLeftRec(x[1], y[1]+1);
-            }
-            if (d == 1) {
-                blockTop(1);
-            }
-            else {
-                blockBottom(1);
-            }
-            blockH = true;
-        }
-        else {
-            if(!blockLeft()) return false;
-        }
-    }
-    else {
-        bool blockedV = isBlockedH(x[0]+1, y[0]);
-        if (blockedV) {
-            int d, dist = 100;
-            if (canGoUp(x[1], y[1]) && goRightRec(x[1], y[1]-1) < dist) {
-                d = 1;
-                dist = goLeftRec(x[1], y[1]-1);
-            }
-            if (canGoDown(x[1], y[1]) && goRightRec(x[1], y[1]+1) < dist) {
-                d = 2;
-                dist = goLeftRec(x[1], y[1]+1);
-            }
-            if (d == 1) {
-                blockTop(0);
-            }
-            else {
-                blockBottom(0);
-            }
-            blockH = true;
-        }
-        else {
-            if (!blockRight()) return false;
-        }
-    }
-    return true;
 }
 
 bool canGoRight(int cx, int cy) {
@@ -210,7 +158,7 @@ int goLeftRec(int cx, int cy) {
 
 int goDownRec(int cx, int cy) {
     if (cy == 8) return 0;
-    int &res = cacheRight[cx][cy];
+    int &res = cacheDown[cx][cy];
     if (res != -1) return res;
     res = 100;
     if (canGoRight(cx, cy)) res = min(res, goDownRec(cx+1, cy) + 1);
@@ -218,6 +166,59 @@ int goDownRec(int cx, int cy) {
     if (canGoDown(cx, cy)) res = min(res, goDownRec(cx, cy+1) + 1);
     if (canGoLeft(cx, cy)) res = min(res, goDownRec(cx-1, cy) + 1);
     return res;
+}
+
+bool blockPlayer(int myId) {
+    if (blockH) return false;
+    if (myId == 0) {
+        bool blockedV = isBlockedH(x[1], y[1]);
+        if (blockedV) {
+            int d, dist = 100;
+            if (canGoUp(x[1], y[1]) && goLeftRec(x[1], y[1]-1) < dist) {
+                d = 1;
+                dist = goLeftRec(x[1], y[1]-1);
+            }
+            if (canGoDown(x[1], y[1]) && goLeftRec(x[1], y[1]+1) < dist) {
+                d = 2;
+                dist = goLeftRec(x[1], y[1]+1);
+            }
+            if (d == 1) {
+                blockTop(1);
+            }
+            else {
+                blockBottom(1);
+            }
+            blockH = true;
+        }
+        else {
+            if(!blockLeft()) return false;
+        }
+    }
+    else {
+        bool blockedV = isBlockedH(x[0]+1, y[0]);
+        if (blockedV) {
+            int d, dist = 100;
+            if (canGoUp(x[1], y[1]) && goRightRec(x[1], y[1]-1) < dist) {
+                d = 1;
+                dist = goLeftRec(x[1], y[1]-1);
+            }
+            if (canGoDown(x[1], y[1]) && goRightRec(x[1], y[1]+1) < dist) {
+                d = 2;
+                dist = goLeftRec(x[1], y[1]+1);
+            }
+            if (d == 1) {
+                blockTop(0);
+            }
+            else {
+                blockBottom(0);
+            }
+            blockH = true;
+        }
+        else {
+            if (!blockRight()) return false;
+        }
+    }
+    return true;
 }
 
 int main()
@@ -255,7 +256,7 @@ int main()
         memset(cacheRight, -1, sizeof(cacheRight));
         memset(cacheLeft, -1, sizeof(cacheLeft));
         memset(cacheDown, -1, sizeof(cacheDown));
-        string direction[4] = {"LEFT GOGOGO!!", "RIGHT GOGOGO!!", "UP UPUP!", "DOWN GOING DOWN!!!"}
+        string direction[4] = {"LEFT GOGOGO!!", "RIGHT GOGOGO!!", "UP UPUP!", "DOWN GOING DOWN!!!"};
         if (myId == 0) {
             // can go right?
             int d = -1, dist = 100;
@@ -321,3 +322,4 @@ int main()
         }
     }
 }
+
