@@ -19,14 +19,14 @@ vector<int> wallX(100); // x-coordinate of the wall
 vector<int> wallY(100);
 vector<int> wallO(100);
 
-int cacheRight[9][9];
-int cacheLeft[9][9];
-int cacheDown[9][9];
+int cacheRight[10][10];
+int cacheLeft[10][10];
+int cacheDown[10][10];
 
 int wallCount; // number of walls on the board
 bool blockH = false;
 
-bool isBlockedH(int cx, int cy) {
+bool isBlockedV(int cx, int cy) {
     for (int i = 0; i < wallCount; ++i) {
         if (wallO[i] == 2 && wallX[i] == cx && (wallY[i] == cy || wallY[i] == cy-1))
             return true;
@@ -37,7 +37,7 @@ bool isBlockedH(int cx, int cy) {
 void blockTop(int id) {
     if (id == 1) {
         int cx = x[1], cy = y[1];
-        while (isBlockedH(cx, cy)) {
+        while (isBlockedV(cx, cy)) {
             cy--;
         }
         if (cx == 8) cx--;
@@ -45,7 +45,7 @@ void blockTop(int id) {
     }
     else {
         int cx = x[0], cy = y[0];
-        while (isBlockedH(cx+1, cy)) {
+        while (isBlockedV(cx+1, cy)) {
             cy--;
         }
         cout << cx << " " << cy+1 << " H BLOCK TOP!" << endl;
@@ -55,29 +55,37 @@ void blockTop(int id) {
 void blockBottom(int id) {
     if (id == 1) {
         int cx = x[1], cy = y[1];
-        while (isBlockedH(cx, cy)) {
+        while (isBlockedV(cx, cy)) {
             cy++;
         }
         if (cx == 8) cx--;
-        cout << cx << " " << cy+1 << " H BLOCK BOTTOM!" << endl;
+        cout << cx << " " << cy << " H BLOCK BOTTOM!" << endl;
     }
     else {
         int cx = x[0], cy = y[0];
-        while (isBlockedH(cx+1, cy)) {
+        while (isBlockedV(cx+1, cy)) {
             cy++;
         }
-        cout << cx << " " << cy+1 << " H BLOCK BOTTOM!" << endl;
+        cout << cx << " " << cy << " H BLOCK BOTTOM!" << endl;
     }
 }
 
 bool blockLeft() {
     int cx = x[1], cy = y[1];
-    if (cy > 0 && !isBlockedH(cx, cy) && !isBlockedH(cx, cy-1)) {
+    if (cy > 0 && !isBlockedV(cx, cy) && !isBlockedV(cx, cy-1)) {
         cout << cx << " " << cy-1 << " V Block Left!" << endl;
         return true;
     }
-    if (cy < 8 && !isBlockedH(cx, cy) && !isBlockedH(cx, cy+1)) {
+    if (cy < 8 && !isBlockedV(cx, cy) && !isBlockedV(cx, cy+1)) {
         cout << cx << " " << cy << " V Block Left!" << endl;
+        return true;
+    }
+    if (cy+1 < 8 && !isBlockedV(cx, cy+1) && !isBlockedV(cx, cy+2)) {
+        cout << cx << " " << cy+1 << " V Block Left!" << endl;
+        return true;
+    }
+    if (cy-1 > 0 && !isBlockedV(cx, cy-1) && !isBlockedV(cx, cy-2)) {
+        cout << cx << " " << cy-2 << " V Block Left!" << endl;
         return true;
     }
     return false;
@@ -85,12 +93,20 @@ bool blockLeft() {
 
 bool blockRight() {
     int cx = x[0]+1, cy = y[0];
-    if (cy > 0 && !isBlockedH(cx, cy) && !isBlockedH(cx, cy-1)) {
+    if (cy > 0 && !isBlockedV(cx, cy) && !isBlockedV(cx, cy-1)) {
         cout << cx << " " << cy-1 << " V Block Right!" << endl;
         return true;
     }
-    if (cy < 8 && !isBlockedH(cx, cy) && !isBlockedH(cx, cy+1)) {
+    if (cy < 8 && !isBlockedV(cx, cy) && !isBlockedV(cx, cy+1)) {
         cout << cx << " " << cy << " V Block Right!" << endl;
+        return true;
+    }
+    if (cy+1 < 8 && !isBlockedV(cx, cy+1) && !isBlockedV(cx, cy+2)) {
+        cout << cx << " " << cy+1 << " V Block Right!" << endl;
+        return true;
+    }
+    if (cy-1 > 0 && !isBlockedV(cx, cy-1) && !isBlockedV(cx, cy-2)) {
+        cout << cx << " " << cy-2 << " V Block Right!" << endl;
         return true;
     }
     return false;
@@ -99,8 +115,9 @@ bool blockRight() {
 bool canGoRight(int cx, int cy) {
     if (cx == 8) return false;
     for (int i = 0; i < wallCount; ++i) {
-        if (wallO[i] == 2 && cx+1 == wallX[i] && (cy == wallY[i] || cy-1 == wallY[i]))
+        if (wallO[i] == 2 && cx+1 == wallX[i] && (cy == wallY[i] || cy-1 == wallY[i])) {
             return false;
+        }
     }
     return true;
 }
@@ -108,8 +125,9 @@ bool canGoRight(int cx, int cy) {
 bool canGoLeft(int cx, int cy) {
     if (cx == 0) return false;
     for (int i = 0; i < wallCount; ++i) {
-        if (wallO[i] == 2 && cx == wallX[i] && (cy == wallY[i] || cy-1 == wallY[i]))
+        if (wallO[i] == 2 && cx == wallX[i] && (cy == wallY[i] || cy-1 == wallY[i])) {
             return false;
+        }
     }
     return true;
 }
@@ -117,8 +135,9 @@ bool canGoLeft(int cx, int cy) {
 bool canGoDown(int cx, int cy) {
     if (cy == 8) return false;
     for (int i = 0; i < wallCount; ++i) {
-        if (wallO[i] == 1 && cy+1 == wallY[i] && (cx == wallX[i] || cx-1 == wallX[i]))
+        if (wallO[i] == 1 && cy+1 == wallY[i] && (cx == wallX[i] || cx-1 == wallX[i])) {
             return false;
+        }
     }
     return true;
 }
@@ -126,8 +145,9 @@ bool canGoDown(int cx, int cy) {
 bool canGoUp(int cx, int cy) {
     if (cy == 0) return false;
     for (int i = 0; i < wallCount; ++i) {
-        if (wallO[i] == 1 && cy == wallY[i] && (cx == wallX[i] || cx-1 == wallX[i]))
+        if (wallO[i] == 1 && cy == wallY[i] && (cx == wallX[i] || cx-1 == wallX[i])) {
             return false;
+        }
     }
     return true;
 }
@@ -150,9 +170,9 @@ int goLeftRec(int cx, int cy) {
     if (res != -1) return res;
     res = 100;
     if (canGoRight(cx, cy)) res = min(res, goLeftRec(cx+1, cy) + 1);
-    if (canGoUp(cx, cy)) res = min(res, goLeftRec(cx, cy-1) + 1);
-    if (canGoDown(cx, cy)) res = min(res, goLeftRec(cx, cy+1) + 1);
-    if (canGoLeft(cx, cy)) res = min(res, goLeftRec(cx-1, cy) + 1);
+    if (canGoUp(cx, cy))    res = min(res, goLeftRec(cx, cy-1) + 1);
+    if (canGoDown(cx, cy))  res = min(res, goLeftRec(cx, cy+1) + 1);
+    if (canGoLeft(cx, cy))  res = min(res, goLeftRec(cx-1, cy) + 1);
     return res;
 }
 
@@ -162,49 +182,62 @@ int goDownRec(int cx, int cy) {
     if (res != -1) return res;
     res = 100;
     if (canGoRight(cx, cy)) res = min(res, goDownRec(cx+1, cy) + 1);
-    if (canGoUp(cx, cy)) res = min(res, goDownRec(cx, cy-1) + 1);
-    if (canGoDown(cx, cy)) res = min(res, goDownRec(cx, cy+1) + 1);
-    if (canGoLeft(cx, cy)) res = min(res, goDownRec(cx-1, cy) + 1);
+    if (canGoUp(cx, cy))    res = min(res, goDownRec(cx, cy-1) + 1);
+    if (canGoDown(cx, cy))  res = min(res, goDownRec(cx, cy+1) + 1);
+    if (canGoLeft(cx, cy))  res = min(res, goDownRec(cx-1, cy) + 1);
     return res;
 }
 
 bool blockPlayer(int myId) {
     if (blockH) return false;
     if (myId == 0) {
-        bool blockedV = isBlockedH(x[1], y[1]);
+        bool blockedV = isBlockedV(x[1], y[1]);
         if (blockedV) {
             int d, dist = 100;
+            blockH = true;
+            memset(cacheLeft, -1, sizeof(cacheLeft));
             if (canGoUp(x[1], y[1]) && goLeftRec(x[1], y[1]-1) < dist) {
                 d = 1;
                 dist = goLeftRec(x[1], y[1]-1);
             }
+            memset(cacheLeft, -1, sizeof(cacheLeft));
             if (canGoDown(x[1], y[1]) && goLeftRec(x[1], y[1]+1) < dist) {
                 d = 2;
                 dist = goLeftRec(x[1], y[1]+1);
             }
             if (d == 1) {
+                if (isBlockedV(x[1], 8)) {
+                    blockLeft();
+                    return true;
+                }
                 blockTop(1);
             }
             else {
+                if (isBlockedV(x[1], 0)) {
+                    blockLeft();
+                    return true;
+                }
                 blockBottom(1);
             }
-            blockH = true;
         }
         else {
             if(!blockLeft()) return false;
         }
     }
     else {
-        bool blockedV = isBlockedH(x[0]+1, y[0]);
+        bool blockedV = isBlockedV(x[0]+1, y[0]);
         if (blockedV) {
             int d, dist = 100;
-            if (canGoUp(x[1], y[1]) && goRightRec(x[1], y[1]-1) < dist) {
+            blockH = true;
+            memset(cacheRight, -1, sizeof(cacheRight));
+            if (canGoUp(x[0], y[0]) && goRightRec(x[0], y[0]-1) < dist) {
                 d = 1;
-                dist = goLeftRec(x[1], y[1]-1);
+                dist = goRightRec(x[0], y[0]-1);
             }
-            if (canGoDown(x[1], y[1]) && goRightRec(x[1], y[1]+1) < dist) {
+            memset(cacheRight, -1, sizeof(cacheRight));
+            if (canGoDown(x[0], y[0]) && goRightRec(x[0], y[0]+1) < dist) {
                 d = 2;
-                dist = goLeftRec(x[1], y[1]+1);
+                dist = goRightRec(x[0], y[0]+1);
             }
             if (d == 1) {
                 blockTop(0);
@@ -212,7 +245,6 @@ bool blockPlayer(int myId) {
             else {
                 blockBottom(0);
             }
-            blockH = true;
         }
         else {
             if (!blockRight()) return false;
@@ -253,25 +285,26 @@ int main()
         }
 
         // find shortest path
-        memset(cacheRight, -1, sizeof(cacheRight));
-        memset(cacheLeft, -1, sizeof(cacheLeft));
-        memset(cacheDown, -1, sizeof(cacheDown));
         string direction[4] = {"LEFT GOGOGO!!", "RIGHT GOGOGO!!", "UP UPUP!", "DOWN GOING DOWN!!!"};
         if (myId == 0) {
             // can go right?
             int d = -1, dist = 100;
+            memset(cacheRight, -1, sizeof(cacheRight));
             if (canGoLeft(x[0], y[0]) && goRightRec(x[0]-1, y[0]) < dist) {
                 dist = goRightRec(x[0]-1, y[0]);
                 d = 0;
             }
+            memset(cacheRight, -1, sizeof(cacheRight));
             if (canGoRight(x[0], y[0]) && goRightRec(x[0]+1, y[0]) < dist) {
                 dist = goRightRec(x[0]+1, y[0]);
                 d = 1;
             }
+            memset(cacheRight, -1, sizeof(cacheRight));
             if (canGoUp(x[0], y[0]) && goRightRec(x[0], y[0]-1) < dist) {
                 dist = goRightRec(x[0], y[0]-1);
                 d = 2;
             }
+            memset(cacheRight, -1, sizeof(cacheRight));
             if (canGoDown(x[0], y[0]) && goRightRec(x[0], y[0]+1) < dist) {
                 dist = goRightRec(x[0], y[0]+1);
                 d = 3;
@@ -281,20 +314,24 @@ int main()
         else if (myId == 1) {
             // can go left?
             int d = -1, dist = 100;
-            if (canGoLeft(x[0], y[0]) && goLeftRec(x[0]-1, y[0]) < dist) {
-                dist = goLeftRec(x[0]-1, y[0]);
+            memset(cacheLeft, -1, sizeof(cacheLeft));
+            if (canGoLeft(x[1], y[1]) && goLeftRec(x[1]-1, y[1]) < dist) {
+                dist = goLeftRec(x[1]-1, y[1]);
                 d = 0;
             }
-            if (canGoRight(x[0], y[0]) && goLeftRec(x[0]+1, y[0]) < dist) {
-                dist = goLeftRec(x[0]+1, y[0]);
+            memset(cacheLeft, -1, sizeof(cacheLeft));
+            if (canGoRight(x[1], y[1]) && goLeftRec(x[1]+1, y[1]) < dist) {
+                dist = goLeftRec(x[1]+1, y[1]);
                 d = 1;
             }
-            if (canGoUp(x[0], y[0]) && goLeftRec(x[0], y[0]-1) < dist) {
-                dist = goLeftRec(x[0], y[0]-1);
+            memset(cacheLeft, -1, sizeof(cacheLeft));
+            if (canGoUp(x[1], y[1]) && goLeftRec(x[1], y[1]-1) < dist) {
+                dist = goLeftRec(x[1], y[1]-1);
                 d = 2;
             }
-            if (canGoDown(x[0], y[0]) && goLeftRec(x[0], y[0]+1) < dist) {
-                dist = goLeftRec(x[0], y[0]+1);
+            memset(cacheLeft, -1, sizeof(cacheLeft));
+            if (canGoDown(x[1], y[1]) && goLeftRec(x[1], y[1]+1) < dist) {
+                dist = goLeftRec(x[1], y[1]+1);
                 d = 3;
             }
             cout << direction[d] << endl;
@@ -302,24 +339,37 @@ int main()
         else {
             // can go Down?
             int d = -1, dist = 100;
-            if (canGoLeft(x[0], y[0]) && goDownRec(x[0]-1, y[0]) < dist) {
-                dist = goDownRec(x[0]-1, y[0]);
+            memset(cacheDown, -1, sizeof(cacheDown));
+            cerr << "left " << x[2]-1 << " " << y[2] << ":" << goDownRec(x[2]-1, y[2]) << endl;
+            memset(cacheDown, -1, sizeof(cacheDown));
+            cerr << "right " << x[2]+1 << " " << y[2] << ":" << goDownRec(x[2]+1, y[2]) << endl;
+            memset(cacheDown, -1, sizeof(cacheDown));
+            cerr << "up " << x[2] << " " << y[2]-1 << ":" << goDownRec(x[2], y[2]-1) << endl;
+            memset(cacheDown, -1, sizeof(cacheDown));
+            cerr << "down " << x[2] << " " << y[2]+1 << ":" << goDownRec(x[2], y[2]+1) << endl;
+            memset(cacheDown, -1, sizeof(cacheDown));
+            if (canGoLeft(x[2], y[2]) && goDownRec(x[2]-1, y[2]) < dist) {
+                dist = goDownRec(x[2]-1, y[2]);
                 d = 0;
             }
-            if (canGoRight(x[0], y[0]) && goDownRec(x[0]+1, y[0]) < dist) {
-                dist = goDownRec(x[0]+1, y[0]);
+            memset(cacheDown, -1, sizeof(cacheDown));
+            if (canGoRight(x[2], y[2]) && goDownRec(x[2]+1, y[2]) < dist) {
+                dist = goDownRec(x[2]+1, y[2]);
                 d = 1;
             }
-            if (canGoUp(x[0], y[0]) && goDownRec(x[0], y[0]-1) < dist) {
-                dist = goDownRec(x[0], y[0]-1);
+            memset(cacheDown, -1, sizeof(cacheDown));
+            if (canGoUp(x[2], y[2]) && goDownRec(x[2], y[2]-1) < dist) {
+                dist = goDownRec(x[2], y[2]-1);
                 d = 2;
             }
-            if (canGoDown(x[0], y[0]) && goDownRec(x[0], y[0]+1) < dist) {
-                dist = goDownRec(x[0], y[0]+1);
+            memset(cacheDown, -1, sizeof(cacheDown));
+            if (canGoDown(x[2], y[2]) && goDownRec(x[2], y[2]+1) < dist) {
+                dist = goDownRec(x[2], y[2]+1);
                 d = 3;
             }
             cout << direction[d] << endl;
         }
     }
 }
+
 
