@@ -12,3 +12,5 @@
 ## [Google Codejam](GCJ/README.md)
 
 ## [LGE Codejam](lgecodejam/README.md)
+
+## [CodinGame](codingame/README.md)
