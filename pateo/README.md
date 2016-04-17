@@ -4,7 +4,7 @@
 Windows: `solve.exe < input.txt`
 Linux: `./solve.bin < input.txt`
 
-### Description
+### Description menu
 Choose menu: (1: pathFromRandomMatrix, 2: pathFromGivenMatrix, 0: exit)
 - when 1.pathFromRandomMatrix is chosen
 *insert dimension:* is showen and need to insert *N*.
@@ -53,5 +53,12 @@ Tracing:
 ```
 
 - when 0 is chosen program ends.
+
+### Algorithm
+1. Loop 1 ~ N*N number and find the number
+2. Check neighbors exists where current number - 1. If it exist, +1 current length and caching for backtracking.
+3. After all loop, find longest length.
+4. backtracking from the last number to first number and print it.
+
 
 
