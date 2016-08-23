@@ -258,9 +258,6 @@ int main()
             res = findBegin(KR, KC);
         }
         
-        // Write an action using cout. DON'T FORGET THE "<< endl"
-        // To debug: cerr << "Debug messages..." << endl;
-
         cout << res << endl; // Kirk's next move (UP DOWN LEFT or RIGHT).
     }
 }
