@@ -7,11 +7,6 @@
 
 using namespace std;
 
-/**
- * Auto-generated code below aims at helping you parse
- * the standard input according to the problem statement.
- **/
-
 bool goControl = true;
 
 vector<string> room;
